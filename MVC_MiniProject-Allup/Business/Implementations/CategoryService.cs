@@ -87,6 +87,7 @@ public class CategoryService : ICategoryService
         existCategory.ModifiedDate=DateTime.UtcNow.AddHours(4);
         existCategory.Name=category.Name;
         existCategory.IsDeleted=category.IsDeleted;
+        existCategory.ImageUrl=category.ImageUrl;
         await _context.SaveChangesAsync();
     }
     public async Task DeleteAsync(int id)

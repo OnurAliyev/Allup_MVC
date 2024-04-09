@@ -1,0 +1,23 @@
+﻿@model Category
+<div class="container-fluid">
+    <h1>Create</h1>
+    <form method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Name</label>
+            <input asp-for="Name" class="form-control">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Deactive</label>
+            <input asp-for="IsDeleted" class="form-control">
+            <span asp-validation-for="IsDeleted" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">ImageFile</label>
+            <input asp-for="ImageFile" class="form-control">
+            <span asp-validation-for="ImageFile" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-outline-primary">Create</button>
+    </form>
+</div>

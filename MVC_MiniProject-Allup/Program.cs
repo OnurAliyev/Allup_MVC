@@ -14,6 +14,8 @@ builder.Services.AddDbContext<AllupDbContext>(opt =>
 }
 );
 builder.Services.AddScoped<ISliderService, SliderService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IBrandService, BrandService>();
 
 var app = builder.Build();
 

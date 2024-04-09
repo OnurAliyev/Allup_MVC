@@ -86,6 +86,7 @@ public class BrandService:IBrandService
         existBrand.ModifiedDate = DateTime.UtcNow.AddHours(4);
         existBrand.Name = brand.Name;
         existBrand.IsDeleted = brand.IsDeleted;
+        existBrand.BrandLogoUrl = brand.BrandLogoUrl;
         await _context.SaveChangesAsync();
     }
     public async Task DeleteAsync(int id)
