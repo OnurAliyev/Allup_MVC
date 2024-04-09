@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MVC_MiniProject_Allup.Business.Interfaces;
-using MVC_MiniProject_Allup.CustomExceptions.CategoryExceptions;
+using MVC_MiniProject_Allup.CustomExceptions.BrandExceptions;
 using MVC_MiniProject_Allup.CustomExceptions.CommonExceptions;
-using MVC_MiniProject_Allup.CustomExceptions.SliderExceptions;
 using MVC_MiniProject_Allup.DataAccesLayer;
 using MVC_MiniProject_Allup.Extensions;
 using MVC_MiniProject_Allup.Models;
 using System.Linq.Expressions;
-using System.Linq;
 
 namespace MVC_MiniProject_Allup.Business.Implementations;
 
@@ -22,7 +20,7 @@ public class BrandService:IBrandService
     }
     public async Task<List<Brand>> GetAllBrandsAsync(Expression<Func<Brand, bool>>? expression = null, params string[] includes)
     {
-        var query = _context.Categories.AsQueryable();
+        var query = _context.Brands.AsQueryable();
         query = _getIncludes(query, includes);
         return expression is not null
             ? await query.Where(expression).ToListAsync()
@@ -30,18 +28,18 @@ public class BrandService:IBrandService
     }
     public async Task<Brand> GetSingleAsync(Expression<Func<Brand, bool>>? expression = null, params string[] includes)
     {
-        var query = _context.Categories.AsQueryable();
+        var query = _context.Brands.AsQueryable();
         query = _getIncludes(query, includes);
         return expression is not null
             ? await query.Where(expression).FirstOrDefaultAsync()
             : await query.FirstOrDefaultAsync();
 
     }
-    public async Task<Category> GetByIdAsync(int id)
+    public async Task<Brand> GetByIdAsync(int id)
     {
-        var category = await _context.Categories.FindAsync(id);
-        if (category is null) throw new CategoryNotFoundException("Category not found!");
-        return category;
+        var brand = await _context.Brands.FindAsync(id);
+        if (brand is null) throw new BrandNotFoundException("Brand not found!");
+        return brand;
     }
     public async Task CreateAsync(Brand brand)
     {
@@ -71,7 +69,7 @@ public class BrandService:IBrandService
     public async Task UpdateAsync(Brand brand)
     {
         var existBrand = await _context.Brands.FirstOrDefaultAsync(b => b.Id == brand.Id);
-        if (existBrand is null) throw new CategoryNotFoundException("Category not found!");
+        if (existBrand is null) throw new BrandNotFoundException("Category not found!");
         if (brand.LogoImageFile is not null)
         {
             if (brand.LogoImageFile.ContentType != "image/jpeg" && brand.LogoImageFile.ContentType != "image/png")
@@ -82,8 +80,8 @@ public class BrandService:IBrandService
             {
                 throw new SizeOfFileException("LogoImageFile", "Please select only photos with a size of less than 3mb");
             }
-            FileManager.DeleteFile(_env.WebRootPath, "uploads/sliders", existBrand.BrandLogoUrl);
-            brand.BrandLogoUrl = brand.LogoImageFile.SaveFile(_env.WebRootPath, "uploads/sliders");
+            FileManager.DeleteFile(_env.WebRootPath, "uploads/brands", existBrand.BrandLogoUrl);
+            brand.BrandLogoUrl = brand.LogoImageFile.SaveFile(_env.WebRootPath, "uploads/brands");
         }
         existBrand.ModifiedDate = DateTime.UtcNow.AddHours(4);
         existBrand.Name = brand.Name;
@@ -92,16 +90,16 @@ public class BrandService:IBrandService
     }
     public async Task DeleteAsync(int id)
     {
-        var existCategory = await _context.Categories.FindAsync(id);
-        if (existCategory is null) throw new SliderNotFoundException("Slider not found!");
+        var existBrand = await _context.Categories.FindAsync(id);
+        if (existBrand is null) throw new BrandNotFoundException("Brand not found!");
 
-        FileManager.DeleteFile(_env.WebRootPath, "uploads/categories", existCategory.ImageUrl);
+        FileManager.DeleteFile(_env.WebRootPath, "uploads/brands", existBrand.ImageUrl);
 
-        _context.Remove(existCategory);
+        _context.Remove(existBrand);
         await _context.SaveChangesAsync();
     }
 
-    private IQueryable<Category> _getIncludes(IQueryable<Category> query, params string[] includes)
+    private IQueryable<Brand> _getIncludes(IQueryable<Brand> query, params string[] includes)
     {
         if (includes is not null)
         {

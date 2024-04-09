@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\uploads\brands\" />
     <Folder Include="wwwroot\uploads\categories\" />
     <Folder Include="wwwroot\uploads\sliders\" />
   </ItemGroup>
