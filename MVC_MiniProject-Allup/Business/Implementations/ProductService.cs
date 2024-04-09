@@ -227,9 +227,10 @@ public class ProductService : IProductService
             ? await query.Where(expression).ToListAsync() 
             : await query.ToListAsync();
     }
-    public async Task<Product> GetSingleAsync(Expression<Func<Product,bool>>? expression = null)
+    public async Task<Product> GetSingleAsync(Expression<Func<Product,bool>>? expression = null,params string[] includes)
     {
         var query = _context.Products.AsQueryable();
+        query = _getIncludes(query, includes);
         return expression is not null
             ? await query.Where(expression).FirstOrDefaultAsync()
             : await query.FirstOrDefaultAsync();
