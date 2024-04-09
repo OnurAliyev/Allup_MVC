@@ -21,16 +21,16 @@ public class ProductController : Controller
     public async Task<IActionResult> Index() => View(await _productService.GetAllProductsAsync(null,"Category","Brand","ProductImages"));
     public async Task<IActionResult> Create()
     {
-        ViewData["category"] = await _categoryService.GetAllCategoriesAsync();
-        ViewData["brand"]= await _brandService.GetAllBrandsAsync();
+        ViewBag.Categories = await _categoryService.GetAllCategoriesAsync();
+        ViewBag.Brands = await _brandService.GetAllBrandsAsync();
         return View();
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Product product)
     {
-        ViewData["category"] = await _categoryService.GetAllCategoriesAsync();
-        ViewData["brand"] = await _brandService.GetAllBrandsAsync();
+        ViewBag.Categories = await _categoryService.GetAllCategoriesAsync();
+        ViewBag.Brands = await _brandService.GetAllBrandsAsync();
         if (!ModelState.IsValid) return View();
         try
         {
@@ -60,8 +60,8 @@ public class ProductController : Controller
     }
     public async Task<IActionResult> Update(int id)
     {
-        ViewData["category"] = await _categoryService.GetAllCategoriesAsync();
-        ViewData["brand"] = await _brandService.GetAllBrandsAsync();
+        ViewBag.Categories = await _categoryService.GetAllCategoriesAsync();
+        ViewBag.Brands = await _brandService.GetAllBrandsAsync();
         Product? product=null;
         try
         {
@@ -82,8 +82,8 @@ public class ProductController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(Product product)
     {
-        ViewData["category"] = await _categoryService.GetAllCategoriesAsync();
-        ViewData["brand"] = await _brandService.GetAllBrandsAsync();
+        ViewBag.Categories = await _categoryService.GetAllCategoriesAsync();
+        ViewBag.Brands = await _brandService.GetAllBrandsAsync();
         if (!ModelState.IsValid) return View();
         try
         {

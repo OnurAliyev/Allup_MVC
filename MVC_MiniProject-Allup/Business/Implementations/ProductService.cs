@@ -37,7 +37,6 @@ public class ProductService : IProductService
             IsCover=true
         };
         await _context.ProductImages.AddAsync(coverImage);
-        await _context.SaveChangesAsync();
 
         if (product.HoverImageFile is null) throw new ImageNullException("HoverImageFile", "Image is required!");
         if (product.HoverImageFile.ContentType != "image/jpeg" && product.HoverImageFile.ContentType != "image/png")
@@ -55,7 +54,6 @@ public class ProductService : IProductService
             IsCover=false
         };
         await _context.ProductImages.AddAsync(hoverImage);
-        await _context.SaveChangesAsync();
 
         if (product.ImageFiles is null) throw new ImageNullException("ImageFiles", "Image is required!");
         foreach(var file in product.ImageFiles)
@@ -75,7 +73,6 @@ public class ProductService : IProductService
                 IsCover=null
             };
             await _context.ProductImages.AddAsync(images);
-            await _context.SaveChangesAsync();
         }
         
         await _context.Products.AddAsync(product);
