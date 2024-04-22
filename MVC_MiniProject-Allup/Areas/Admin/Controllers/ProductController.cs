@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVC_MiniProject_Allup.Business.Interfaces;
 using MVC_MiniProject_Allup.CustomExceptions.CommonExceptions;
 using MVC_MiniProject_Allup.CustomExceptions.ProductExceptions;
@@ -6,6 +7,7 @@ using MVC_MiniProject_Allup.Models;
 
 namespace MVC_MiniProject_Allup.Areas.Admin.Controllers;
 [Area("Admin")]
+[Authorize(Roles = "Admin,SuperAdmin")]
 public class ProductController : Controller
 {
     private readonly IProductService _productService;
@@ -27,6 +29,7 @@ public class ProductController : Controller
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<IActionResult> Create(Product product)
     {
         ViewBag.Categories = await _categoryService.GetAllCategoriesAsync();
@@ -80,6 +83,7 @@ public class ProductController : Controller
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<IActionResult> Update(Product product)
     {
         ViewBag.Categories = await _categoryService.GetAllCategoriesAsync();

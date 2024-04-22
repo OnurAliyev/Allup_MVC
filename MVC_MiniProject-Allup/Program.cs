@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVC_MiniProject_Allup.Business.Implementations;
 using MVC_MiniProject_Allup.Business.Interfaces;
 using MVC_MiniProject_Allup.DataAccesLayer;
+using MVC_MiniProject_Allup.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,18 @@ builder.Services.AddScoped<ISliderService, SliderService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
+{
+    opt.Password.RequireNonAlphanumeric = true;
+    opt.Password.RequiredLength = 8;
+    opt.Password.RequireUppercase = true;
+    opt.Password.RequireLowercase = true;
+    opt.Password.RequireDigit = true;
+    opt.User.RequireUniqueEmail = true;
+})
+              .AddEntityFrameworkStores<AllupDbContext>()
+              .AddDefaultTokenProviders();
 
 var app = builder.Build();
 

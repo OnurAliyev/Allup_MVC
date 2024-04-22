@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVC_MiniProject_Allup.Business.Interfaces;
 using MVC_MiniProject_Allup.CustomExceptions.CommonExceptions;
 using MVC_MiniProject_Allup.CustomExceptions.SliderExceptions;
@@ -15,6 +16,7 @@ public class SliderController : Controller
     {
         _sliderService = sliderService;
     }
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<IActionResult> Index() => View(await _sliderService.GetSliderListAsync(s => s.IsDeleted == false));
     public IActionResult Create()
     {
@@ -22,6 +24,7 @@ public class SliderController : Controller
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<IActionResult> Create(Slider slider)
     {
         if (!ModelState.IsValid) return View();
@@ -54,6 +57,7 @@ public class SliderController : Controller
     public async Task<IActionResult> Update(int id) => View(await _sliderService.GetByIdAsync(id));
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<IActionResult> Update(Slider slider)
     {
         if (!ModelState.IsValid) return View();

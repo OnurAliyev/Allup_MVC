@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVC_MiniProject_Allup.Business.Interfaces;
 using MVC_MiniProject_Allup.CustomExceptions.CategoryExceptions;
 using MVC_MiniProject_Allup.CustomExceptions.CommonExceptions;
@@ -7,6 +8,7 @@ using MVC_MiniProject_Allup.Models;
 namespace MVC_MiniProject_Allup.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = "Admin,SuperAdmin")]
 public class CategoryController : Controller
 {
     private readonly ICategoryService _categoryService;
@@ -19,6 +21,7 @@ public class CategoryController : Controller
     public IActionResult Create() => View();
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<IActionResult> Create(Category category)
     {
         if (!ModelState.IsValid) return View();
@@ -51,6 +54,7 @@ public class CategoryController : Controller
     public async Task<IActionResult> Update(int id) => View(await _categoryService.GetByIdAsync(id));
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<IActionResult> Update(Category category)
     {
         if (!ModelState.IsValid) return View();
@@ -80,6 +84,7 @@ public class CategoryController : Controller
         }
         return RedirectToAction("Index");
     }
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<IActionResult> Delete(int id)
     {
         try
